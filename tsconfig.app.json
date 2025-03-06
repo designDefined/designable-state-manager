@@ -24,8 +24,12 @@
 
     /* Path Alias */
     "paths": {
-      "@library/*": ["./library/*"],
-      "@demo/*": ["./src/*"]
+      "@library": ["./library/index.ts"],
+      "@constant/*": ["./src/constant/*"],
+      "@entity/*": ["./src/entity/*"],
+      "@store/*": ["./src/store/*"],
+      "@component/*": ["./src/component/*"],
+      "@module/*": ["./src/module/*"]
     }
   },
   "include": ["src", "library"]

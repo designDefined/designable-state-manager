@@ -12,8 +12,11 @@
     "prepare": "husky && echo 'yarn build' > .husky/pre-commit"
   },
   "dependencies": {
+    "@flexive/core": "^0.5.8",
+    "nanoid": "^5.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
