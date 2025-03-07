@@ -8,9 +8,9 @@ type StoreContext = {
 const StoreContext = createContext<StoreContext>({
   storeList: [],
 });
-const useStoreFromContext = ({ name }: { name: string }) => {
+const useStoreFromContext = ({ serialKey }: { serialKey: string }) => {
   const { storeList } = useContext(StoreContext);
-  return storeList.find(store => store.availableNames.includes(name));
+  return storeList.find(store => store.availableKeys.includes(serialKey));
 };
 
 export { StoreContext, useStoreFromContext };

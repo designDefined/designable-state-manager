@@ -8,7 +8,7 @@ type StoreProviderProps = PropsWithChildren & { storeFunctions: (() => UnknownSt
 const mergeStores = (...stores: UnknownStore[]): UnknownStore[] => {
   const storeMap = new Map<string, UnknownStore>();
   stores.forEach(store => {
-    storeMap.set(store.name, store);
+    storeMap.set(store.serialKey, store);
   });
   return Array.from(storeMap.values());
 };

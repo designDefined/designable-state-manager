@@ -16,98 +16,108 @@ type StoreInjectionConfig = {
 };
 
 // Base
-type Inject<Props extends object, Result extends object> = (
-  props: Props,
-  config?: StoreInjectionConfig,
-) => Store<Result>;
-type Extensions = { [k: string]: Inject<never, object> };
-type ExtensionResult<E extends Extensions> = UnionToIntersection<TypeOfZustand<ReturnType<E[keyof E]>>>;
+type Injectable<Props extends object, Result extends object> = {
+  serialKey: string;
+  inject: (props: Props, config?: StoreInjectionConfig) => Store<Result>;
+};
+type Extensions = { [k: string]: Injectable<never, object> };
+type ExtensionResult<E extends Extensions> = UnionToIntersection<TypeOfZustand<ReturnType<E[keyof E]["inject"]>>>;
 
 // Store
-type Store<T> = {
-  name: string;
-  availableNames: string[];
-  store: ZustandStore<T>;
-  key: string;
-};
-type UnknownStore = Store<unknown>;
 
 type StoreBlueprint<Name extends string, Extended extends Extensions> = {
   name: Name;
+  serialKey: string;
   extended: Extended;
 };
 type UnknownStoreBlueprint = StoreBlueprint<string, Extensions>;
 
-type StoreImplementor<
+type StoreFactoryImplementor<
   Blueprint extends UnknownStoreBlueprint,
   Props extends object,
   Result extends ExtensionResult<Blueprint["extended"]>,
 > = (props: { injected: Props; extended: Blueprint["extended"] }) => ZustandStoreFactory<Result>;
 
-type StoreImpl<
+type StoreFactory<
   Blueprint extends UnknownStoreBlueprint,
   Props extends object,
   Result extends ExtensionResult<Blueprint["extended"]>,
 > = Blueprint & {
-  implKey: string;
   inject: (props: Props, config?: StoreInjectionConfig) => Store<Result>;
 };
 type UnknownProps = object;
 type UnknownResult = ExtensionResult<Extensions>;
-type UnknownStoreImpl = StoreImpl<UnknownStoreBlueprint, UnknownProps, UnknownResult>;
+type UnknownStoreFactory = StoreFactory<UnknownStoreBlueprint, UnknownProps, UnknownResult>;
 
-type StoreImplAsExtension<ImplToExtend extends UnknownStoreImpl> = {
-  [k in ImplToExtend["name"]]: ImplToExtend["inject"];
+type StoreFactoryAsExtension<ImplToExtend extends UnknownStoreFactory> = {
+  [k in ImplToExtend["name"]]: { serialKey: string; inject: ImplToExtend["inject"] };
 };
 
-type StoreImplProps<Impl extends UnknownStoreImpl> =
-  Impl extends StoreImpl<UnknownStoreBlueprint, infer Props, UnknownResult> ? Props : never;
-type StoreImplResult<Impl extends UnknownStoreImpl> =
-  Impl extends StoreImpl<UnknownStoreBlueprint, UnknownProps, infer Result> ? Result : never;
+type StoreFactoryProps<Impl extends UnknownStoreFactory> =
+  Impl extends StoreFactory<UnknownStoreBlueprint, infer Props, UnknownResult> ? Props : never;
+type StoreFactoryResult<Impl extends UnknownStoreFactory> =
+  Impl extends StoreFactory<UnknownStoreBlueprint, UnknownProps, infer Result> ? Result : never;
+
+type Store<T> = {
+  name: string;
+  serialKey: string;
+  availableKeys: string[];
+  storeKey: string;
+  store: ZustandStore<T>;
+};
+type UnknownStore = Store<unknown>;
 
 // API
-const _create = <Blueprint extends StoreBlueprint<string, Extensions>>(blueprint: Blueprint) => {
-  const extend = <StoreImplToExtend extends UnknownStoreImpl>(storeImpl: StoreImplToExtend) => {
-    return _create<
+const createBluePrint = <Blueprint extends UnknownStoreBlueprint>(blueprint: Blueprint) => {
+  const extend = <FactoryToExtend extends UnknownStoreFactory>(factoryToExtend: FactoryToExtend) => {
+    if (Object.keys(blueprint.extended).includes(factoryToExtend.name)) {
+      throw new Error(
+        `Cannot extend store of same name "${factoryToExtend.name}". It ocurred on extending "${blueprint.name}".`,
+      );
+    }
+    return createBluePrint<
       StoreBlueprint<
         Blueprint["name"],
-        Blueprint["extended"] & StoreImplToExtend["extended"] & StoreImplAsExtension<StoreImplToExtend>
+        Blueprint["extended"] & FactoryToExtend["extended"] & StoreFactoryAsExtension<FactoryToExtend>
       >
     >({
       name: blueprint.name,
+      serialKey: blueprint.serialKey,
       extended: {
         ...blueprint.extended,
-        ...storeImpl.extended,
-        [storeImpl.name]: storeImpl.inject,
-      } as Blueprint["extended"] & StoreImplToExtend["extended"] & StoreImplAsExtension<StoreImplToExtend>,
+        ...factoryToExtend.extended,
+        [factoryToExtend.name]: { serialKey: factoryToExtend.serialKey, inject: factoryToExtend.inject },
+      } as Blueprint["extended"] & FactoryToExtend["extended"] & StoreFactoryAsExtension<FactoryToExtend>,
     });
   };
 
   const implement = <Props extends object, Result extends ExtensionResult<Blueprint["extended"]>>(
-    implementor: StoreImplementor<Blueprint, Props, Result>,
-  ): StoreImpl<Blueprint, Props, Result> => {
-    const implKey = getRandomKey({ prefix: blueprint.name });
+    implementor: StoreFactoryImplementor<Blueprint, Props, Result>,
+  ): StoreFactory<Blueprint, Props, Result> => {
     const inject = (props: Props, config?: StoreInjectionConfig): Store<Result> => {
-      const key = hashKeys([implKey, props, config?.local ? getRandomKey({ prefix: "local" }) : undefined]);
-
+      const storeKey = hashKeys([
+        blueprint.serialKey,
+        props,
+        config?.local ? getRandomKey({ prefix: "local" }) : undefined,
+      ]);
       const injectStore = (): Store<Result> => {
-        const name = blueprint.name;
-        const availableNames = [...Object.keys(blueprint.extended), name];
+        const extendedKeys = Object.values(blueprint.extended).map(({ serialKey }) => serialKey);
+        const availableKeys = [...extendedKeys, blueprint.serialKey];
         const zustandFactory = implementor({ injected: props, extended: blueprint.extended });
         return {
-          name,
-          availableNames,
+          name: blueprint.name,
+          serialKey: blueprint.serialKey,
+          availableKeys,
+          storeKey,
           store: createZustandStore<Result>()(zustandFactory),
-          key,
         };
       };
 
-      return cache.retrieve<Store<Result>>({ key, init: injectStore });
+      return cache.retrieve<Store<Result>>({ key: storeKey, init: injectStore });
     };
     return {
       ...blueprint,
       inject,
-      implKey,
     };
   };
 
@@ -118,10 +128,11 @@ const _create = <Blueprint extends StoreBlueprint<string, Extensions>>(blueprint
   };
 };
 
-const create = <Name extends string>({ name }: { name: Name }) => _create({ name, extended: {} });
+const create = <Name extends string>({ name }: { name: Name }) =>
+  createBluePrint({ name, serialKey: getRandomKey({ prefix: name }), extended: {} });
 
 // Hook API
 
 export { create };
 
-export type { ZustandStore, StoreImplProps, StoreImplResult, UnknownStoreImpl, UnknownStore };
+export type { ZustandStore, StoreFactoryProps, StoreFactoryResult, UnknownStoreFactory, UnknownStore };

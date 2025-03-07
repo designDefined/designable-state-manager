@@ -24,7 +24,7 @@ export const textStore = create({ name: "text" })
   .implement<{ initialText?: string }, TextStore>(({ injected, extended }) => {
     const {
       store: { getState: countStore, subscribe: subscribeCountStore },
-    } = extended.count({ initialCount: injected.initialText?.length }, { local: true });
+    } = extended.count.inject({ initialCount: injected.initialText?.length }, { local: true });
 
     return set => {
       subscribeCountStore(({ count }) => {
