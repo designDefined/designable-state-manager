@@ -16,7 +16,7 @@ type StoreInjectionConfig = {
 };
 
 // Base
-type Injectable<Props extends object, Result extends object> = {
+type Injectable<Props extends UnknownProps, Result extends UnknownResult> = {
   serialKey: string;
   inject: (props: Props, config?: StoreInjectionConfig) => Store<Result>;
 };
@@ -45,10 +45,9 @@ type StoreFactory<
 > = Blueprint & {
   inject: (props: Props, config?: StoreInjectionConfig) => Store<Result>;
 };
-type UnknownProps = object;
+type UnknownProps = never;
 type UnknownResult = ExtensionResult<Extensions>;
 type UnknownStoreFactory = StoreFactory<UnknownStoreBlueprint, UnknownProps, UnknownResult>;
-
 type StoreFactoryAsExtension<ImplToExtend extends UnknownStoreFactory> = {
   [k in ImplToExtend["name"]]: { serialKey: string; inject: ImplToExtend["inject"] };
 };
@@ -95,11 +94,7 @@ const createBluePrint = <Blueprint extends UnknownStoreBlueprint>(blueprint: Blu
     implementor: StoreFactoryImplementor<Blueprint, Props, Result>,
   ): StoreFactory<Blueprint, Props, Result> => {
     const inject = (props: Props, config?: StoreInjectionConfig): Store<Result> => {
-      const storeKey = hashKeys([
-        blueprint.serialKey,
-        props,
-        config?.local ? getRandomKey({ prefix: "local" }) : undefined,
-      ]);
+      const storeKey = hashKeys([blueprint.serialKey, config?.local ? getRandomKey({ prefix: "local" }) : props]);
       const injectStore = (): Store<Result> => {
         const extendedKeys = Object.values(blueprint.extended).map(({ serialKey }) => serialKey);
         const availableKeys = [...extendedKeys, blueprint.serialKey];
@@ -135,4 +130,16 @@ const create = <Name extends string>({ name }: { name: Name }) =>
 
 export { create };
 
-export type { ZustandStore, StoreFactoryProps, StoreFactoryResult, UnknownStoreFactory, UnknownStore };
+export type {
+  ZustandStore,
+  StoreBlueprint,
+  UnknownStoreBlueprint,
+  UnknownProps,
+  UnknownResult,
+  StoreFactory,
+  StoreFactoryProps,
+  StoreFactoryResult,
+  UnknownStoreFactory,
+  Store,
+  UnknownStore,
+};
