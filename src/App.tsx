@@ -1,10 +1,8 @@
 import { Task } from "@entity/task/Task";
-import { Div, Main } from "@flexive/core";
+import { Main } from "@flexive/core";
 import { StoreProvider } from "@library";
-import { ContentEditor } from "@module/content/ContentEditor";
-import { TaskItem } from "@module/task/TaskItem";
-import { ContentStore } from "@store/ContentStore";
-import { TaskStore } from "@store/TaskStore";
+import { TaskList } from "@module/task/TaskList";
+import { TasksViewStore } from "@store/ViewStore/tasks";
 
 const sampleTasks: Task[] = [
   {
@@ -26,21 +24,17 @@ const sampleTasks: Task[] = [
 function App() {
   return (
     <Main>
-      content:
-      <StoreProvider storeFunctions={[() => ContentStore.inject({}, { local: true })]}>
-        <ContentEditor />
+      <StoreProvider
+        storeFunctions={[
+          () =>
+            TasksViewStore.inject({
+              from: () => sampleTasks,
+              deps: { date: 1 },
+            }),
+        ]}
+      >
+        <TaskList />
       </StoreProvider>
-      task:
-      <Div>
-        {sampleTasks.map(task => (
-          <StoreProvider
-            key={task.id}
-            storeFunctions={[() => TaskStore.inject({ initialTask: task }, { local: true })]}
-          >
-            <TaskItem />
-          </StoreProvider>
-        ))}
-      </Div>
     </Main>
   );
 }

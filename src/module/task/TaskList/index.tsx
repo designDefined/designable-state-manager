@@ -1,0 +1,27 @@
+import { Ul, Li, Article } from "@flexive/core";
+import { useTasksViewStore } from "@store/ViewStore/tasks";
+import { TaskItem } from "../TaskItem";
+import { StoreProvider } from "@library";
+import { TaskStore } from "@store/TaskStore";
+
+export const TaskList = () => {
+  const { view: tasks } = useTasksViewStore();
+
+  return (
+    <Article>
+      task:
+      <Ul>
+        {tasks.map(task => (
+          <StoreProvider
+            key={task.id}
+            storeFunctions={[() => TaskStore.inject({ initialTask: task }, { local: true })]}
+          >
+            <Li>
+              <TaskItem />
+            </Li>
+          </StoreProvider>
+        ))}
+      </Ul>
+    </Article>
+  );
+};
