@@ -1,11 +1,8 @@
 import { Button } from "@flexive/core";
-import { ToggleAchievement } from "@entity/achievement/Achievement";
+import { useAchievementStore } from "@store/AchievementStore";
 
-type ToggleAchievementItemProps = {
-  achievement: ToggleAchievement;
-  toggle: () => void;
-};
+export const ToggleAchievementItem = () => {
+  const { achievement, toggleAchievement } = useAchievementStore();
 
-export const ToggleAchievementItem = ({ achievement, toggle }: ToggleAchievementItemProps) => {
-  return <Button onClick={toggle}>{achievement.done ? "done!" : "notDone!"}</Button>;
+  return <Button onClick={toggleAchievement}>{achievement.done ? "done!" : "notDone!"}</Button>;
 };
