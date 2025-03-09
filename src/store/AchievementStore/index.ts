@@ -18,35 +18,40 @@ const AchievementStore = create({ name: "AchievementStore" }).implement<
     { local: true },
   );
 
-  return set => {
-    contentStore.store.subscribe(({ content, countContent }) => {
-      set(({ achievement }) => {
-        if (achievement.type !== "MEMO") {
-          throw new Error("Can only write memo MemoAchievement");
-        }
-        const count = countContent();
-        return {
-          achievement: {
-            ...achievement,
-            memo: content,
-            done: count >= achievement.achieveTextCount,
-          },
-        };
-      });
-    });
-
-    return {
-      achievement: initialAchievement,
-      toggleAchievement: () => {
+  return {
+    store: set => {
+      contentStore.store.subscribe(({ content, countContent }) => {
         set(({ achievement }) => {
-          if (achievement.type !== "TOGGLE") {
-            throw new Error("Can only toggle ToggleAchievement");
+          if (achievement.type !== "MEMO") {
+            throw new Error("Can only write memo MemoAchievement");
           }
-          return { achievement: { ...achievement, done: !achievement.done } };
+          const count = countContent();
+          return {
+            achievement: {
+              ...achievement,
+              memo: content,
+              done: count >= achievement.achieveTextCount,
+            },
+          };
         });
-      },
-      getMemoContentStore: () => contentStore,
-    };
+      });
+
+      return {
+        achievement: initialAchievement,
+        toggleAchievement: () => {
+          set(({ achievement }) => {
+            if (achievement.type !== "TOGGLE") {
+              throw new Error("Can only toggle ToggleAchievement");
+            }
+            return { achievement: { ...achievement, done: !achievement.done } };
+          });
+        },
+        getMemoContentStore: () => contentStore,
+      };
+    },
+    onDestroy: () => {
+      contentStore.destroy();
+    },
   };
 });
 

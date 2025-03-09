@@ -36,7 +36,10 @@ type StoreFactoryImplementor<
   Blueprint extends UnknownStoreBlueprint,
   Props extends object,
   Result extends ExtensionResult<Blueprint["extended"]>,
-> = (props: { injected: Props; extended: Blueprint["extended"] }) => ZustandStoreFactory<Result>;
+> = (props: { injected: Props; extended: Blueprint["extended"] }) => {
+  store: ZustandStoreFactory<Result>;
+  onDestroy?: () => void;
+};
 
 type StoreFactory<
   Blueprint extends UnknownStoreBlueprint,
@@ -63,6 +66,7 @@ type Store<T> = {
   availableKeys: string[];
   storeKey: string;
   store: ZustandStore<T>;
+  destroy: () => void;
 };
 type UnknownStore = Store<unknown>;
 
@@ -98,13 +102,18 @@ const createBluePrint = <Blueprint extends UnknownStoreBlueprint>(blueprint: Blu
       const injectStore = (): Store<Result> => {
         const extendedKeys = Object.values(blueprint.extended).map(({ serialKey }) => serialKey);
         const availableKeys = [...extendedKeys, blueprint.serialKey];
-        const zustandFactory = implementor({ injected: props, extended: blueprint.extended });
+        const { store: zustandFactory, onDestroy } = implementor({ injected: props, extended: blueprint.extended });
+        const destroy = () => {
+          onDestroy?.();
+          cache.remove({ key: storeKey });
+        };
         return {
           name: blueprint.name,
           serialKey: blueprint.serialKey,
           availableKeys,
           storeKey,
           store: createZustandStore<Result>()(zustandFactory),
+          destroy,
         };
       };
 

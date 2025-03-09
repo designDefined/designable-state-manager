@@ -15,11 +15,15 @@ const retrieve = <T>({ key, init }: { key: string; init?: () => T }) => {
   set({ key, value: newCache });
   return newCache;
 };
+const remove = ({ key }: { key: string }) => {
+  cacheMap.delete(key);
+};
 
 const cache = {
   get,
   set,
   retrieve,
+  remove,
 };
 
 export { cache };

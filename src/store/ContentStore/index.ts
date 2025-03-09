@@ -7,13 +7,13 @@ type ContentStore = {
   countContent: () => number;
 };
 
-const ContentStore = create({ name: "ContentStore" }).implement<{ initialContent?: Content }, ContentStore>(
-  () => (set, get) => ({
+const ContentStore = create({ name: "ContentStore" }).implement<{ initialContent?: Content }, ContentStore>(() => ({
+  store: (set, get) => ({
     content: "",
     writeContent: content => set({ content }),
     countContent: () => get().content.length,
   }),
-);
+}));
 
 const useContentStore = createHook(ContentStore);
 

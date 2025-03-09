@@ -12,16 +12,22 @@ const TaskStore = create({ name: "TaskStore" })
     const initialTask = injected.initialTask;
     const {
       store: { getState: getAchievementStore, subscribe: subscribeAchievementStore },
+      destroy: destroyAchievementStore,
     } = extended.AchievementStore.inject({ initialAchievement: initialTask.achievement }, { local: true });
 
-    return set => {
-      subscribeAchievementStore(({ achievement }) => {
-        set({ achievement });
-      });
-      return {
-        ...getAchievementStore(),
-        task: initialTask,
-      };
+    return {
+      store: set => {
+        subscribeAchievementStore(({ achievement }) => {
+          set({ achievement });
+        });
+        return {
+          ...getAchievementStore(),
+          task: initialTask,
+        };
+      },
+      onDestroy: () => {
+        destroyAchievementStore();
+      },
     };
   });
 

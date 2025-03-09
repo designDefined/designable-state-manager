@@ -6,13 +6,12 @@ type ViewStore<T> = {
 };
 
 const ViewHOS = <T, Deps extends object = object>({ viewName }: { viewName: string }) =>
-  create({ name: `${viewName}ViewStore` }).implement<{ from: () => T; deps: Deps }, ViewStore<T>>(
-    ({ injected }) =>
-      set => ({
-        view: injected.from(),
-        invalidate: () => set({ view: injected.from() }),
-      }),
-  );
+  create({ name: `${viewName}ViewStore` }).implement<{ from: () => T; deps: Deps }, ViewStore<T>>(({ injected }) => ({
+    store: set => ({
+      view: injected.from(),
+      invalidate: () => set({ view: injected.from() }),
+    }),
+  }));
 
 export type { ViewStore };
 export { ViewHOS };
