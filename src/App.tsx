@@ -4,6 +4,7 @@ import { StoreProvider } from "@library";
 import { TaskList } from "@module/task/TaskList";
 import { TasksViewStore } from "@store/ViewStore/tasks";
 import { useState } from "react";
+import { cn } from "./style/utility";
 
 const sampleTasks = (id: number): Task[] => [
   {
@@ -25,7 +26,7 @@ const sampleTasks = (id: number): Task[] => [
 function App() {
   const [date, setDate] = useState(1);
   return (
-    <Main>
+    <Main className={cn("App")}>
       <Header row g={4}>
         <Button onClick={() => setDate(date - 1)}>prev</Button>
         <Div>{date}</Div>
