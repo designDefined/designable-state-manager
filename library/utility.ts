@@ -42,4 +42,4 @@ const hashKeys = (targets: (RawKey | Falsy)[]) =>
 
 const getRandomKey = ({ prefix }: { prefix?: string }) => hashKeys([prefix, nanoid()]);
 
-export { hashKeys, getRandomKey };
+export { getRandomKey, hashKeys };

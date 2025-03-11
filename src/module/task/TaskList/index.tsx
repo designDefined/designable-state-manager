@@ -1,8 +1,8 @@
-import { Ul, Li, Article } from "@flexive/core";
-import { useTasksViewStore } from "@store/ViewStore/tasks";
-import { TaskItem } from "../TaskItem";
+import { Article, Li, Ul } from "@flexive/core";
 import { StoreProvider } from "@library";
 import { TaskStore } from "@store/TaskStore";
+import { useTasksViewStore } from "@store/ViewStore/tasks";
+import { TaskItem } from "../TaskItem";
 
 export const TaskList = () => {
   const { view: tasks } = useTasksViewStore();

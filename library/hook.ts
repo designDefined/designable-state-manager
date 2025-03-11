@@ -1,5 +1,5 @@
-import { useStoreFromContext } from "./context";
 import { useStore as useZustandStore } from "zustand";
+import { useStoreFromContext } from "./context";
 import { StoreFactoryProps, StoreFactoryResult, UnknownStoreFactory, ZustandStore } from "./store";
 
 type StoreHook<Factory extends UnknownStoreFactory> = (

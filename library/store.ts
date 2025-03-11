@@ -1,6 +1,6 @@
-import { createStore as createZustandStore, StoreApi as ZustandStoreApi, ExtractState } from "zustand";
-import { getRandomKey, hashKeys } from "./utility";
+import { createStore as createZustandStore, ExtractState, StoreApi as ZustandStoreApi } from "zustand";
 import { cache } from "./cache";
+import { getRandomKey, hashKeys } from "./utility";
 
 // Zustand
 type ZustandStore<T> = ZustandStoreApi<T>;
@@ -140,15 +140,15 @@ const create = <Name extends string>({ name }: { name: Name }) =>
 export { create };
 
 export type {
-  ZustandStore,
+  Store,
   StoreBlueprint,
-  UnknownStoreBlueprint,
-  UnknownProps,
-  UnknownResult,
   StoreFactory,
   StoreFactoryProps,
   StoreFactoryResult,
-  UnknownStoreFactory,
-  Store,
+  UnknownProps,
+  UnknownResult,
   UnknownStore,
+  UnknownStoreBlueprint,
+  UnknownStoreFactory,
+  ZustandStore,
 };

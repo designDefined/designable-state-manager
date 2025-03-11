@@ -1,6 +1,6 @@
 import { Task } from "@entity/task/Task";
-import { ViewHOS } from ".";
 import { createHook } from "@library";
+import { ViewHOS } from ".";
 
 const TasksViewStore = ViewHOS<Task[]>({ viewName: "Tasks" });
 

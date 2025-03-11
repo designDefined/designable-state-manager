@@ -13,5 +13,5 @@ const ViewHOS = <T, Deps extends object = object>({ viewName }: { viewName: stri
     }),
   }));
 
-export type { ViewStore };
 export { ViewHOS };
+export type { ViewStore };

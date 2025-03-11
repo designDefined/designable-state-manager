@@ -1,6 +1,6 @@
 import { useAchievementStore } from "@store/AchievementStore";
-import { ToggleAchievementItem } from "./ToggleAchievementItem";
 import { MemoAchievementItem } from "./MemoAchievementItem";
+import { ToggleAchievementItem } from "./ToggleAchievementItem";
 
 export const AchievementItem = () => {
   const { achievement } = useAchievementStore();

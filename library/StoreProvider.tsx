@@ -1,6 +1,6 @@
 import { PropsWithChildren, useContext, useEffect, useMemo } from "react";
-import { UnknownStore } from "./store";
 import { StoreContext } from "./context";
+import { UnknownStore } from "./store";
 
 // Provider
 type StoreProviderProps = PropsWithChildren & { storeFunctions: (() => UnknownStore)[]; deps?: unknown[] };
