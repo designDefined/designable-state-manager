@@ -5,6 +5,51 @@
   line-height: 1.4;
 }
 
+@media (min-width: 1920px) {
+  :root {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1079px) {
+  :root {
+    font-size: 8px;
+  }
+}
+
 body {
   font-size: 1.6rem;
+}
+
+h1 {
+  font-size: 10rem;
+}
+h2 {
+  font-size: 6rem;
+}
+h3 {
+  font-size: 4.8rem;
+}
+h4 {
+  font-size: 3.2rem;
+}
+h5 {
+  font-size: 2.4rem;
+}
+h6 {
+  font-size: 2rem;
+}
+
+.light {
+  font-weight: 100;
+}
+
+.size-s {
+  font-size: 1.4rem;
+}
+.size-m {
+  font-size: 1.6rem;
+}
+.size-l {
+  font-size: 1.8rem;
 }

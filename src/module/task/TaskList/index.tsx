@@ -9,13 +9,9 @@ export const TaskList = () => {
 
   return (
     <Article>
-      task:
-      <Ul>
+      <Ul g="1.2rem">
         {tasks.map(task => (
-          <StoreProvider
-            key={task.id}
-            storeFunctions={[() => TaskStore.inject({ initialTask: task }, { local: true })]}
-          >
+          <StoreProvider key={task.id} storeFunctions={[() => TaskStore.inject({ taskId: task.id, _task: task })]}>
             <Li>
               <TaskItem />
             </Li>

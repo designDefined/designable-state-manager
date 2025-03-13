@@ -1,3 +1,4 @@
+import { ID } from "@constant/ID";
 import { Task } from "@entity/task/Task";
 import { create, createHook } from "@library";
 import { AchievementStore } from "@store/AchievementStore";
@@ -8,8 +9,8 @@ type TaskStore = AchievementStore & {
 
 const TaskStore = create({ name: "TaskStore" })
   .extend(AchievementStore)
-  .implement<{ initialTask: Task }, TaskStore>(({ injected, extended }) => {
-    const initialTask = injected.initialTask;
+  .implement<{ taskId: ID["TASK"]; _task: Task }, TaskStore>(({ injected, extended }) => {
+    const initialTask = injected._task;
     const {
       store: { getState: getAchievementStore, subscribe: subscribeAchievementStore },
       destroy: destroyAchievementStore,
@@ -18,7 +19,7 @@ const TaskStore = create({ name: "TaskStore" })
     return {
       store: set => {
         subscribeAchievementStore(({ achievement }) => {
-          set({ achievement });
+          set(prev => ({ achievement, task: { ...prev.task, achievement } }));
         });
         return {
           ...getAchievementStore(),

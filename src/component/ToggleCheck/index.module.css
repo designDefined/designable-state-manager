@@ -1,0 +1,10 @@
+.ToggleCheck:hover {
+  background-color: oklch(var(--g7) / 0.1);
+}
+.ToggleCheck:active {
+  background-color: oklch(var(--g7) / 0.2);
+}
+.ToggleCheck:disabled {
+  background-color: transparent !important;
+  cursor: default;
+}

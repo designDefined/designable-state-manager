@@ -1,0 +1,13 @@
+.Selectable {
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+.Selectable:hover {
+  background-color: oklch(var(--g5) / 0.05);
+}
+.Selectable:active {
+  background-color: oklch(var(--g5) / 0.1);
+}
+.Selectable.selected {
+  background-color: oklch(var(--g5) / 0.2);
+}

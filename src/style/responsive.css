@@ -1,0 +1,11 @@
+@media (max-width: 1079px) {
+  .responsive-dir {
+    flex-direction: column !important;
+  }
+}
+
+@media (min-width: 1080px) {
+  .responsive-dir {
+    flex-direction: row !important;
+  }
+}

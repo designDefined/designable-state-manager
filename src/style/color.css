@@ -1,0 +1,78 @@
+:root {
+  --raw1: 98% 0 0;
+  --raw2: 94% 0 0;
+  --raw3: 88% 0 0;
+  --raw4: 80% 0 0;
+  --raw5: 70% 0 0;
+  --raw6: 56% 0 0;
+  --raw7: 40% 0 0;
+  --raw8: 22% 0 0;
+  --raw9: 2% 0 0;
+}
+
+.theme-success {
+  --raw1: 80% 0.12 270;
+  --raw2: 77% 0.12 270;
+  --raw3: 73% 0.12 270;
+  --raw4: 67% 0.12 270;
+  --raw5: 60% 0.12 270;
+  --raw6: 52% 0.12 270;
+  --raw7: 42% 0.12 270;
+  --raw8: 30% 0.12 270;
+  --raw9: 16% 0.12 270;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --g1: var(--raw1);
+    --g2: var(--raw2);
+    --g3: var(--raw3);
+    --g4: var(--raw4);
+    --g5: var(--raw5);
+    --g6: var(--raw6);
+    --g7: var(--raw7);
+    --g8: var(--raw8);
+    --g9: var(--raw9);
+  }
+  .theme-success {
+    --g1: var(--raw1);
+    --g2: var(--raw2);
+    --g3: var(--raw3);
+    --g4: var(--raw4);
+    --g5: var(--raw5);
+    --g6: var(--raw6);
+    --g7: var(--raw7);
+    --g8: var(--raw8);
+    --g9: var(--raw9);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --g1: var(--raw9);
+    --g2: var(--raw8);
+    --g3: var(--raw7);
+    --g4: var(--raw6);
+    --g5: var(--raw5);
+    --g6: var(--raw4);
+    --g7: var(--raw3);
+    --g8: var(--raw2);
+    --g9: var(--raw1);
+  }
+  .theme-success {
+    --g1: var(--raw9);
+    --g2: var(--raw8);
+    --g3: var(--raw7);
+    --g4: var(--raw6);
+    --g5: var(--raw5);
+    --g6: var(--raw4);
+    --g7: var(--raw3);
+    --g8: var(--raw2);
+    --g9: var(--raw1);
+  }
+}
+
+:root {
+  background-color: oklch(var(--g1));
+  color: oklch(var(--g9));
+}

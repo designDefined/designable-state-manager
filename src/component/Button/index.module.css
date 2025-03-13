@@ -1,0 +1,6 @@
+.Button:hover {
+  opacity: 0.75;
+}
+.Button:active {
+  opacity: 0.5;
+}

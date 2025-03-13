@@ -29,7 +29,9 @@
       "@entity/*": ["./src/entity/*"],
       "@store/*": ["./src/store/*"],
       "@component/*": ["./src/component/*"],
-      "@module/*": ["./src/module/*"]
+      "@style/*": ["./src/style/*"],
+      "@module/*": ["./src/module/*"],
+      "@ui/*": ["./src/ui/*"]
     }
   },
   "include": ["src", "library"]
