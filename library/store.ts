@@ -88,7 +88,7 @@ const createBlueprint = <
       key: string;
       injected: InputOf<Blueprint>;
       extended: { [Extension in Extensions[number] as NameOf<Extension>]: Extension };
-    }) => { store: ZustandStoreFactory<OutputOf<Blueprint>> },
+    }) => { store: ZustandStoreFactory<OutputOf<Blueprint>>; onDestroy?: () => void },
   ): StoreFactory<NameOf<Blueprint>, InputOf<Blueprint>, OutputOf<Blueprint>> => {
     const name = blueprint.name as NameOf<Blueprint>;
     const availableNames = [name, ...extensions.flatMap(extension => extension.availableNames)];
@@ -97,7 +97,7 @@ const createBlueprint = <
     const inject = (input: InputOf<Blueprint>, config?: StoreInjectionConfig) => {
       const key = keyManager.hash([name, getDefaultKey(input), config?.additionalKey]);
       const injectStore = (): Store<OutputOf<Blueprint>> => {
-        const { store: zustandFactory } = factoryFunction({
+        const { store: zustandFactory, onDestroy } = factoryFunction({
           name,
           key,
           injected: input,
@@ -105,7 +105,7 @@ const createBlueprint = <
         });
         const client = createZustandStore<OutputOf<Blueprint>>()(zustandFactory);
         const destroy = () => {
-          // onDestroy?.();
+          onDestroy?.();
           cache.remove({ key: key });
         };
 
