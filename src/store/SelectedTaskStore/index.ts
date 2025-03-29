@@ -9,12 +9,12 @@ type SelectedTaskStore = {
   clearSelectedTask: () => void;
 };
 
-const SelectedTaskStore = create({ name: "SelectedTaskStore" }).implement<object, SelectedTaskStore>(() => ({
+const SelectedTaskStore = create<object, SelectedTaskStore>({ name: "SelectedTaskStore" }).implement(() => ({
   store: set => ({
     selectTask: task =>
       set(prev => {
         prev.getTaskStore?.()?.destroy();
-        const newStore = TaskStore.inject({ taskId: task.id, _task: task });
+        const newStore = TaskStore.inject({ initialTask: task });
         return {
           selectedTask: task,
           getTaskStore: () => newStore,

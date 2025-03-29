@@ -8,19 +8,18 @@ type AchievementStore = {
   getMemoContentStore: () => Store<ContentStore>;
 };
 
-const AchievementStore = create({ name: "AchievementStore" }).implement<
-  { initialAchievement: Achievement },
-  AchievementStore
->(({ injected }) => {
+const AchievementStore = create<{ initialAchievement: Achievement }, AchievementStore>({
+  name: "AchievementStore",
+}).implement(({ name, key, injected }) => {
   const initialAchievement = injected.initialAchievement;
   const contentStore = ContentStore.inject(
     { initialContent: initialAchievement.type === "MEMO" ? initialAchievement.memo : undefined },
-    { local: true },
+    { additionalKey: [name, key] },
   );
 
   return {
     store: set => {
-      contentStore.store.subscribe(({ content, countContent }) => {
+      contentStore.client.subscribe(({ content, countContent }) => {
         set(({ achievement }) => {
           if (achievement.type !== "MEMO") {
             throw new Error("Can only write memo MemoAchievement");

@@ -1,14 +1,14 @@
 import { PropsWithChildren, useContext, useEffect, useMemo } from "react";
 import { StoreContext } from "./context";
-import { UnknownStore } from "./store";
+import { Store } from "./store";
 
 // Provider
-type StoreProviderProps = PropsWithChildren & { storeFunctions: (() => UnknownStore)[]; deps?: unknown[] };
+type StoreProviderProps = PropsWithChildren & { storeFunctions: (() => Store)[]; deps?: unknown[] };
 
-const mergeStores = (...stores: UnknownStore[]): UnknownStore[] => {
-  const storeMap = new Map<string, UnknownStore>();
+const mergeStores = (...stores: Store[]): Store[] => {
+  const storeMap = new Map<string, Store>();
   stores.forEach(store => {
-    storeMap.set(store.serialKey, store);
+    storeMap.set(store.name, store);
   });
   return Array.from(storeMap.values());
 };

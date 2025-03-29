@@ -1,16 +1,16 @@
 import { createContext, useContext } from "react";
-import { UnknownStore } from "./store";
+import { Store } from "./store";
 
 // Context
 type StoreContext = {
-  storeList: UnknownStore[];
+  storeList: Store[];
 };
 const StoreContext = createContext<StoreContext>({
   storeList: [],
 });
-const useStoreFromContext = ({ serialKey }: { serialKey: string }) => {
+const useStoreFromContext = <TargetStore extends Store>({ name }: { name: string }) => {
   const { storeList } = useContext(StoreContext);
-  return storeList.find(store => store.availableKeys.includes(serialKey));
+  return storeList.find(store => store.availableNames.includes(name)) as TargetStore | undefined;
 };
 
 export { StoreContext, useStoreFromContext };

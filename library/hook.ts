@@ -1,22 +1,17 @@
 import { useStore as useZustandStore } from "zustand";
 import { useStoreFromContext } from "./context";
-import { StoreFactoryProps, StoreFactoryResult, UnknownStoreFactory, ZustandStore } from "./store";
+import { StoreFactory } from "./store";
 
-type StoreHook<Factory extends UnknownStoreFactory> = (
-  props?: StoreFactoryProps<Factory>,
-) => StoreFactoryResult<Factory>;
-
-const createHook = <Factory extends UnknownStoreFactory>(factory: Factory): StoreHook<Factory> => {
-  const useStore: StoreHook<Factory> = props => {
-    const fromContext = useStoreFromContext({ serialKey: factory.serialKey });
-    let store: ZustandStore<StoreFactoryResult<Factory>>;
+const createHook = <Factory extends StoreFactory>(factory: Factory) => {
+  const useStore = (props?: Parameters<Factory["inject"]>[0]) => {
+    const fromContext = useStoreFromContext<ReturnType<Factory["inject"]>>({ name: factory.name });
+    let store: ReturnType<Factory["inject"]>["client"];
     if (props) {
-      // @ts-expect-error TODO: Covariance problem. How can I solve this?
       const injected = factory.inject(props);
-      store = injected.store as ZustandStore<StoreFactoryResult<Factory>>;
+      store = injected.client;
     } else {
       if (!fromContext) throw new Error("No store matching");
-      store = fromContext.store as ZustandStore<StoreFactoryResult<Factory>>;
+      store = fromContext.client;
     }
     return useZustandStore(store);
   };

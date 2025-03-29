@@ -1,4 +1,4 @@
-const cacheMap = new Map();
+const cacheMap = new Map<string, unknown>();
 
 const get = <T>({ key }: { key: string }) => {
   return cacheMap.get(key) as T | undefined;
@@ -19,11 +19,22 @@ const remove = ({ key }: { key: string }) => {
   cacheMap.delete(key);
 };
 
+const match = <T>({ prefix, fn }: { prefix: string; fn: (value: T) => void }) => {
+  const value: T[] = [];
+  for (const [key, value] of cacheMap.entries()) {
+    if (key.startsWith(prefix)) {
+      fn(value as T);
+    }
+  }
+  return value;
+};
+
 const cache = {
   get,
   set,
   retrieve,
   remove,
+  match,
 };
 
 export { cache };

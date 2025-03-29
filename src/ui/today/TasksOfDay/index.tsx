@@ -1,30 +1,21 @@
-import { H6, Main, Section } from "@flexive/core";
-import { StoreProvider } from "@library";
+import { H6, Main, Section, Span } from "@flexive/core";
 import { TaskList } from "@module/task/TaskList";
-import { useSelectedDateStore } from "@store/SelectedDateStore";
-import { TasksViewStore } from "@store/ViewStore/tasks";
-import { sampleTasks } from "./sampleTasks";
+import { useCountsWithMessage } from "./useCountsWithMessage";
 
 export const TasksOfDay = () => {
-  const { selectedDate } = useSelectedDateStore();
+  const { totalCount, doneCount, progressMessage } = useCountsWithMessage();
 
   return (
     <Section g={24}>
-      <H6 className="text-6 light" px={48} py={32} alignC="end" />
-      <StoreProvider
-        deps={[selectedDate]}
-        storeFunctions={[
-          () =>
-            TasksViewStore.inject({
-              from: () => sampleTasks(selectedDate),
-              deps: { selectedDate },
-            }),
-        ]}
-      >
-        <Main f overM>
-          <TaskList />
-        </Main>
-      </StoreProvider>
+      <H6 className="text-6 light" row pt="2rem" px="1rem" alignM="between" g="2rem">
+        <Span>{progressMessage}</Span>
+        <Span>
+          {doneCount} / {totalCount}
+        </Span>
+      </H6>
+      <Main f overM>
+        <TaskList />
+      </Main>
     </Section>
   );
 };

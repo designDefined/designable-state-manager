@@ -27,6 +27,7 @@
       "@library": ["./library/index.ts"],
       "@constant/*": ["./src/constant/*"],
       "@entity/*": ["./src/entity/*"],
+      "@repository/*": ["./src/repository/*"],
       "@store/*": ["./src/store/*"],
       "@component/*": ["./src/component/*"],
       "@style/*": ["./src/style/*"],

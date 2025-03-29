@@ -9,7 +9,7 @@ type SelectedDateStore = {
   toPrevDay: () => void;
 };
 
-const SelectedDateStore = create({ name: "SelectedDateStore" }).implement<object, SelectedDateStore>(() => {
+const SelectedDateStore = create<object, SelectedDateStore>({ name: "SelectedDateStore" }).implement(() => {
   const today = DateHelper.toDate(new Date());
   const initialDate = today.getTime();
 
