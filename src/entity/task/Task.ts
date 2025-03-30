@@ -5,8 +5,9 @@ import { Content } from "../content/Content";
 
 export type Task = {
   id: ID["TASK"];
-  label: string;
-  achievement: Achievement;
-  description: Content;
+  cycleId?: ID["CYCLE"];
   date: DateTimestamp;
+  name: string;
+  description?: Content;
+  achievement: Achievement;
 };

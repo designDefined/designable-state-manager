@@ -33,7 +33,7 @@ export const TaskItem = () => {
 const SimpleContent = ({ task }: { task: Task }) => {
   return (
     <Div row alignC p="1.6rem" pr="2.4rem">
-      <Div f>{task.label}</Div>
+      <Div f>{task.name}</Div>
       <Div onClick={e => e.stopPropagation()}>
         <AchievementItem />
       </Div>
@@ -46,7 +46,7 @@ const DetailContent = ({ task, expanded }: { task: Task; expanded?: boolean }) =
     <Div p="1.6rem" pr="2.4rem" g="1.2rem">
       <Div row g={4}>
         <ToggleChevron className="text-4" toggled={expanded} />
-        <Div f>{task.label}</Div>
+        <Div f>{task.name}</Div>
         <ToggleCheck toggled={task.achievement.done} disabled />
       </Div>
       {expanded && (

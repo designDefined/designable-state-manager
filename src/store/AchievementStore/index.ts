@@ -29,7 +29,7 @@ const AchievementStore = create<{ initialAchievement: Achievement }, Achievement
             achievement: {
               ...achievement,
               memo: content,
-              done: count >= achievement.achieveTextCount,
+              done: count >= achievement.targetCharacterCount,
             },
           };
         });

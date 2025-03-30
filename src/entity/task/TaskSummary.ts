@@ -3,6 +3,6 @@ import { Achievement } from "../achievement/Achievement";
 
 export type TaskSummary = {
   id: ID["TASK"];
-  label: string;
+  name: string;
   achievement: Achievement;
 };

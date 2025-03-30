@@ -42,10 +42,9 @@ export const TaskList = () => {
                 ...tasks,
                 {
                   id: nanoid(),
-                  label: "New Task",
-                  achievement: { type: "TOGGLE", done: false },
-                  description: "",
+                  name: "New Task",
                   date,
+                  achievement: { type: "TOGGLE", done: false },
                 },
               ],
             });

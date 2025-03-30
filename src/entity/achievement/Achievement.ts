@@ -1,19 +1,15 @@
-import { ACHIVEMENT_TYPE } from "@constant/ACHIEVEMENT";
+import { ACHIEVEMENT_TYPE, ACHIEVEMENT_TYPE_ENUM } from "@constant/ACHIEVEMENT_TYPE";
 import { Content } from "@entity/content/Content";
 
-type AchievementBase<TYPE extends ACHIVEMENT_TYPE> = {
-  type: TYPE;
+type AchievementBase<Type extends ACHIEVEMENT_TYPE> = {
+  type: Type;
   done: boolean;
 };
 
-export type ToggleAchievement = AchievementBase<"TOGGLE">;
-export type MemoAchievement = AchievementBase<"MEMO"> & {
+export type ToggleAchievement = AchievementBase<ACHIEVEMENT_TYPE_ENUM["TOGGLE"]>;
+export type MemoAchievement = AchievementBase<ACHIEVEMENT_TYPE_ENUM["MEMO"]> & {
   memo: Content;
-  achieveTextCount: number;
+  targetCharacterCount: number;
 };
 
 export type Achievement = ToggleAchievement | MemoAchievement;
-
-export type AchievementDetailByType = {
-  [Item in Achievement as Item["type"]]: Omit<Item, "type" | "done">;
-};

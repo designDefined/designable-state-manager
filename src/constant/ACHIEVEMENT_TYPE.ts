@@ -1,0 +1,4 @@
+export type ACHIEVEMENT_TYPE = "MEMO" | "TOGGLE";
+export type ACHIEVEMENT_TYPE_ENUM = {
+  [T in ACHIEVEMENT_TYPE]: T;
+};
