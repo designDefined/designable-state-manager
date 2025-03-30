@@ -15,16 +15,20 @@ type TaskMapDto = Record<number, Task[]>;
 const sampleTasks = (id: number): Task[] => [
   {
     id: `sample${id * 2 - 1}`,
+    cycleId: `sample-cycle`,
+    cycleCount: 0,
     name: `Sample Toggle Task ${id}`,
     achievement: { type: "TOGGLE", done: false },
     description: "Sample Description",
-    date: 0,
+    time: 0,
   },
   {
     id: `sample${id * 2}`,
+    cycleId: `sample-cycle`,
+    cycleCount: 0,
     name: `Sample Memo Task ${id}`,
     achievement: { type: "MEMO", memo: "", targetCharacterCount: 10, done: false },
-    date: 0,
+    time: 0,
   },
 ];
 

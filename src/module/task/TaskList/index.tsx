@@ -43,7 +43,9 @@ export const TaskList = () => {
                 {
                   id: nanoid(),
                   name: "New Task",
-                  date,
+                  cycleId: "new-cycle",
+                  cycleCount: 0,
+                  time: date,
                   achievement: { type: "TOGGLE", done: false },
                 },
               ],

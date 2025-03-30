@@ -3,10 +3,8 @@ import { Timestamp } from "@entity/time/Timestamp";
 import { Achievement } from "../achievement/Achievement";
 import { Content } from "../content/Content";
 
-export type Task = {
+export type QuickTask = {
   id: ID["TASK"];
-  cycleId: ID["CYCLE"];
-  cycleCount: number;
   time: Timestamp;
   name: string;
   description?: Content;

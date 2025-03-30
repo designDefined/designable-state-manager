@@ -4,7 +4,7 @@ import { Content } from "@entity/content/Content";
 
 export type TaskDraft = {
   id: ID["TASK"];
-  cycleId?: ID["CYCLE"];
+  cycleId: ID["CYCLE"];
   name: string;
   description?: Content;
   achievementDraft: AchievementDraft;
