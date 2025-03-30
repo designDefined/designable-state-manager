@@ -7,7 +7,8 @@ export type TaskDraftReserved = {
   id: ID["TASK"];
   cycleId: ID["CYCLE"];
   cycleCount: number;
-  time: Timestamp;
+  startTime: Timestamp;
+  endTime: Timestamp;
   draftId?: ID["TASK"];
   name: string;
   description?: Content;

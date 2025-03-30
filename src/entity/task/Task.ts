@@ -7,7 +7,8 @@ export type Task = {
   id: ID["TASK"];
   cycleId: ID["CYCLE"];
   cycleCount: number;
-  time: Timestamp;
+  startTime: Timestamp;
+  endTime: Timestamp;
   name: string;
   description?: Content;
   achievement: Achievement;

@@ -2,6 +2,7 @@ import { GOAL_STATUS } from "@constant/GOAL_STATUS";
 import { ID } from "@constant/ID";
 import { Color } from "@entity/color/Color";
 import { Content } from "@entity/content/Content";
+import { Cycle } from "@entity/cycle/Cycle";
 import { DateTimestamp } from "@entity/time/Timestamp";
 
 export type Goal = {
@@ -12,4 +13,5 @@ export type Goal = {
   description?: Content;
   startDate: DateTimestamp;
   endDate: DateTimestamp;
+  cycles: Cycle[];
 };

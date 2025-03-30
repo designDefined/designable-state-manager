@@ -20,7 +20,8 @@ const sampleTasks = (id: number): Task[] => [
     name: `Sample Toggle Task ${id}`,
     achievement: { type: "TOGGLE", done: false },
     description: "Sample Description",
-    time: 0,
+    startTime: 0,
+    endTime: 1,
   },
   {
     id: `sample${id * 2}`,
@@ -28,7 +29,8 @@ const sampleTasks = (id: number): Task[] => [
     cycleCount: 0,
     name: `Sample Memo Task ${id}`,
     achievement: { type: "MEMO", memo: "", targetCharacterCount: 10, done: false },
-    time: 0,
+    startTime: 0,
+    endTime: 1,
   },
 ];
 

@@ -5,7 +5,8 @@ import { Content } from "../content/Content";
 
 export type QuickTask = {
   id: ID["TASK"];
-  time: Timestamp;
+  startTime: Timestamp;
+  endTime: Timestamp;
   name: string;
   description?: Content;
   achievement: Achievement;
